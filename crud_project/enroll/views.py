@@ -26,9 +26,23 @@ def add_show(request):
 
     return render(request, 'addandshow.html', {'form': fm, 'all_data': stud})
 
+
 # This function show delete data
-def delete_data(request,id):
-    if request.method=="POST":
-        pi=student.objects.get(pk=id)
+def delete_data(request, id):
+    if request.method == "POST":
+        pi = student.objects.get(pk=id)
         pi.delete()
-        return HttpResponseRedirect('/')
+        return HttpResponse('/')
+
+
+def update_data(request, id):
+     if request.method=="POST":
+        pi = student.objects.get(pk=id)
+        print("pi",pi)
+        fm=studentregisration(request.POST,instance=pi)
+        if fm.is_valid():
+            fm.save()
+     else:
+        pi = student.objects.get(pk=id)
+        fm=studentregisration(instance=pi)
+     return render(request, 'update.html', {'form': fm})
